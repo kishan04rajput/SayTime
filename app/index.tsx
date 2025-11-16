@@ -12,8 +12,8 @@ export default function Index() {
   const [selectedAmPm, setSelectedAmPm] = useState(String);
 
   const ampm = [
-    { label: 'AM', value: 'AM' },
-    { label: 'PM', value: 'PM' },
+    { label: 'AM', value: 'am' },
+    { label: 'PM', value: 'pm' },
   ];
   const hour = [
     { label: '01', value: '01' },
@@ -97,28 +97,29 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 30){
-      speak("Nine Thirty AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 35){
-      speak("Nine Thirty Five AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 40){
-      speak("Nine Forty AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 45){
-      speak("Nine Forty Five AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 50){
-      speak("Nine Fifty AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 55){
-      speak("Nine Fifty Five AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 56){
-      speak("Nine Fifty Six AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 57){
-      speak("Nine Fifty Seven AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 58){
-      speak("Nine Fifty Eight AM");
-    }else if (Number(currentTime.slice(0,2)) === 9 && Number(currentTime.slice(3,5)) === 59){
-      speak("Nine Fifty Nine AM");
-    }else if (Number(currentTime.slice(0,2)) === 10 && Number(currentTime.slice(3,5)) === 0){
-      speak("Ten AM");
+    console.log(`${currentTime}`);
+    if (currentTime.slice(0,1) === "9" && currentTime.slice(2,4) === "30" && currentTime.slice(5,7) === "00"){
+      speak("9 30 A M");
+    }else if (currentTime.slice(0,1) === "9" && currentTime.slice(2,4) === "35" && currentTime.slice(5,7) === "00"){
+      speak("9 35 A M");
+    }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "40" && currentTime.slice(5,7) === "00"){
+      speak("9 40 A M");
+    }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "45" && currentTime.slice(5,7) === "00"){
+      speak("9 45 A M");
+    }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "50" && currentTime.slice(5,7) === "00"){
+      speak("9 50 A M");
+    }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "55" && currentTime.slice(5,7) === "00"){
+      speak("9 55 A M");
+    }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "56" && currentTime.slice(5,7) === "00"){
+      speak("9 56 A M");
+    }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "57" && currentTime.slice(5,7) === "00"){
+      speak("9 57 A M");
+    }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "58" && currentTime.slice(5,7) === "00"){
+      speak("9 58 M");
+    }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "59" && currentTime.slice(5,7) === "00"){
+      speak("9 59 A M");
+    }else if (currentTime.slice(0,2) === "10"&& currentTime.slice(3,5) === "00" && currentTime.slice(6,8) === "00"){
+      speak("10 A M");
     }
   },[currentTime]);
 
@@ -141,8 +142,8 @@ export default function Index() {
     }
     if (storedAmPm) setSelectedAmPm(storedAmPm);
     else {
-      setSelectedAmPm("AM");
-      await AsyncStorage.setItem('selectedAmPm', "AM");
+      setSelectedAmPm("am");
+      await AsyncStorage.setItem('selectedAmPm', "am");
       showToast("Default AM/PM set to AM");
     }
   };
