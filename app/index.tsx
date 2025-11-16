@@ -196,7 +196,7 @@ export default function Index() {
 
   setTimeout(() => {
     setCurrentTime(new Date().toLocaleTimeString());
-  }, 30000);
+  }, 1000);
 
   const updateSelectedHour = async (e: any) => {
     setSelectedHour(e.value);
