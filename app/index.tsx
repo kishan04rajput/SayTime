@@ -115,11 +115,13 @@ export default function Index() {
     }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "57" && currentTime.slice(5,7) === "00"){
       speak("9 57 A M");
     }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "58" && currentTime.slice(5,7) === "00"){
-      speak("9 58 M");
+      speak("9 58 A M");
     }else if (currentTime.slice(0,1) === "9"&& currentTime.slice(2,4) === "59" && currentTime.slice(5,7) === "00"){
       speak("9 59 A M");
     }else if (currentTime.slice(0,2) === "10"&& currentTime.slice(3,5) === "00" && currentTime.slice(6,8) === "00"){
       speak("10 A M");
+    }else{
+      speak(`The time is ${currentTime}`);
     }
   },[currentTime]);
 
