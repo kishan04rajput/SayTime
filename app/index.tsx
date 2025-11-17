@@ -88,9 +88,10 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#000",
       }}
     >
-      <Text>{currentTime}</Text>
+      <Text style={{ color: "#fff" }}>{currentTime}</Text>
     </View>
   );
 }
