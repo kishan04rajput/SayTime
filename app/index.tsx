@@ -4,6 +4,12 @@ import { Text, View } from "react-native";
 
 export default function App() {
   useEffect(() => {
+    setInterval(() => {
+      triggerNotification();
+    }, 15000);
+  }, []);
+
+  const triggerNotification = () => {
     Notifications.cancelAllScheduledNotificationsAsync();
     Notifications.scheduleNotificationAsync({
       content: {
@@ -12,7 +18,7 @@ export default function App() {
       },
       trigger: null,
     });
-  }, []);
+  };
 
   return (
     <View
@@ -20,9 +26,10 @@ export default function App() {
         flex: 1,
         alignItems: "center",
         justifyContent: "space-around",
+        backgroundColor: "black"
       }}
     >
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text style={{ color: "white" }}>Open up App.tsx to start working on your app!</Text>
     </View>
   );
 }
