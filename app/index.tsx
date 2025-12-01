@@ -27,7 +27,7 @@ export default function App() {
 
     const interval = setInterval(() => {
       triggerNotification();
-    }, 1000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
