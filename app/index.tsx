@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Text, View } from "react-native";
 
 export default function App() {
+
   const triggerNotification = () => {
     Notifications.cancelAllScheduledNotificationsAsync();
     Notifications.scheduleNotificationAsync({
@@ -12,12 +13,23 @@ export default function App() {
       },
       trigger: null,
     });
+  };  
+
+  const checkNotificationPermission = async () => {
+    const { status } = await Notifications.getPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permission for notifications not granted");
+    }
   };
 
   useEffect(() => {
-    setInterval(() => {
+    checkNotificationPermission();
+
+    const interval = setInterval(() => {
       triggerNotification();
-    }, 15000);
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
