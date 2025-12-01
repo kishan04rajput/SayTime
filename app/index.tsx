@@ -2,19 +2,9 @@ import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
 import { Text, View } from "react-native";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
-
 export default function App() {
   useEffect(() => {
     Notifications.cancelAllScheduledNotificationsAsync();
-
     Notifications.scheduleNotificationAsync({
       content: {
         title: "Look at that notification",
