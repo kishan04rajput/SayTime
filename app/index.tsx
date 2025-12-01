@@ -3,12 +3,6 @@ import { useEffect } from "react";
 import { Text, View } from "react-native";
 
 export default function App() {
-  useEffect(() => {
-    setInterval(() => {
-      triggerNotification();
-    }, 15000);
-  }, []);
-
   const triggerNotification = () => {
     Notifications.cancelAllScheduledNotificationsAsync();
     Notifications.scheduleNotificationAsync({
@@ -19,6 +13,12 @@ export default function App() {
       trigger: null,
     });
   };
+
+  useEffect(() => {
+    setInterval(() => {
+      triggerNotification();
+    }, 15000);
+  }, []);
 
   return (
     <View
