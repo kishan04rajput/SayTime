@@ -5,13 +5,13 @@ import { Text, View } from "react-native";
 export default function App() {
 
   const triggerNotification = () => {
-    Notifications.cancelAllScheduledNotificationsAsync();
+    // Notifications.cancelAllScheduledNotificationsAsync();
     Notifications.scheduleNotificationAsync({
       content: {
         title: "Look at that notification",
         body: "I'm so proud of myself!",
       },
-      trigger: null,
+      trigger: null
     });
   };  
 
@@ -27,7 +27,7 @@ export default function App() {
 
     const interval = setInterval(() => {
       triggerNotification();
-    }, 10000);
+    }, 30000);
 
     return () => clearInterval(interval);
   }, []);
