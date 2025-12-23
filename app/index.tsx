@@ -13,7 +13,7 @@ export default function App() {
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-        seconds: 30,
+        seconds: 60,
         repeats: true,
       },
     });
