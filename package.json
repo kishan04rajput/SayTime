@@ -9,7 +9,9 @@
     "ios": "npx expo-doctor; rm -rf ios; expo run:ios --no-build-cache --device",
     "web": "expo start --web",
     "lint": "expo lint",
-    "prebuild": "expo prebuild --clean"
+    "prebuild": "expo prebuild --clean",
+    "epal": "eas build --platform android --profile preview --local",
+    "epil": "eas build --platform ios --profile preview --local"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
