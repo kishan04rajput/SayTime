@@ -4,32 +4,43 @@ import { Text, View } from "react-native";
 
 export default function App() {
 
-  const triggerNotification = () => {
-    // Notifications.cancelAllScheduledNotificationsAsync();
-    Notifications.scheduleNotificationAsync({
+  const triggerNotification = async () => {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+    await Notifications.scheduleNotificationAsync({
       content: {
         title: "Look at that notification",
         body: "I'm so proud of myself!",
       },
-      trigger: null
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+        seconds: 30,
+        repeats: true,
+      },
     });
-  };  
+  };
 
   const checkNotificationPermission = async () => {
     const { status } = await Notifications.getPermissionsAsync();
+    let finalStatus = status;
+
     if (status !== "granted") {
-      alert("Permission for notifications not granted");
+      const { status: newStatus } = await Notifications.requestPermissionsAsync();
+      finalStatus = newStatus;
     }
+
+    if (finalStatus !== "granted") {
+      alert("Permission for notifications not granted");
+      return false;
+    }
+    return true;
   };
 
   useEffect(() => {
-    checkNotificationPermission();
-
-    const interval = setInterval(() => {
-      triggerNotification();
-    }, 30000);
-
-    return () => clearInterval(interval);
+    checkNotificationPermission().then((hasPermission) => {
+      if (hasPermission) {
+          triggerNotification();
+      }
+    });
   }, []);
 
   return (
