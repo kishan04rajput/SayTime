@@ -2,7 +2,7 @@
   "expo": {
     "name": "SayTime",
     "slug": "SayTime",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "saytime",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.citalkishan.SayTime"
+      "bundleIdentifier": "com.kishanrajput.ios.sayTime"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.citalkishan.SayTime"
+      "package": "com.kishanrajput.android.sayTime"
     },
     "web": {
       "output": "static",

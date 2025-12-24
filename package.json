@@ -5,8 +5,8 @@
   "scripts": {
     "start": "expo start -c",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "npx expo-doctor; rm -rf android; expo run:android --no-build-cache --device",
-    "ios": "npx expo-doctor; rm -rf ios; expo run:ios --no-build-cache --device",
+    "android": "rm -rf android; npx expo-doctor; expo run:android --no-build-cache --device",
+    "ios": "rm -rf ios; npx expo-doctor; expo run:ios --no-build-cache --device",
     "web": "expo start --web",
     "lint": "expo lint",
     "prebuild": "expo prebuild --clean",
