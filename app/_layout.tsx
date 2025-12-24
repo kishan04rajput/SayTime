@@ -1,6 +1,5 @@
 import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
-import { Platform } from "react-native";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -10,15 +9,6 @@ Notifications.setNotificationHandler({
     shouldShowList: true,
   }),
 });
-
-if (Platform.OS === "android") {
-  Notifications.setNotificationChannelAsync("default", {
-    name: "default",
-    importance: Notifications.AndroidImportance.MAX,
-    vibrationPattern: [0, 250, 250, 250],
-    lightColor: "#FF231F7C",
-  });
-}
 
 export default function RootLayout() {
   return (
