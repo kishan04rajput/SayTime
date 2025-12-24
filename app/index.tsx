@@ -1,15 +1,46 @@
 import { useEffect } from "react";
 import { Text, View } from "react-native";
-import { checkNotificationPermission, scheduleDailyNotification } from "../utils/notificationUtil";
+import { askNotificationPermission, canAskAgainNotificationPermission, checkNotificationPermission, scheduleDailyNotification } from "../utils/notificationUtil";
+import { openAppSettingsAlertUtil } from "../utils/openAppSettingsAlertUtil";
 
 export default function App() {
 
   useEffect(() => {
-    checkNotificationPermission().then((hasPermission) => {
-      if (hasPermission) {
-        scheduleDailyNotification();
-      }
-    });
+    checkNotificationPermission()
+      .then(() => {
+        scheduleDailyNotification({
+          hour: 0,
+          minute: 0,
+          title: "Look at that notification",
+          body: "I'm so proud of myself!",
+        });
+      })
+      .catch(() => {
+        canAskAgainNotificationPermission()
+          .then(() => {
+            askNotificationPermission()
+              .then(() => {
+                scheduleDailyNotification({
+                  hour: 0,
+                  minute: 0,
+                  title: "Look at that notification",
+                  body: "I'm so proud of myself!",
+                });
+              })
+              .catch(() => {
+                openAppSettingsAlertUtil({
+                  title: "Permission Required",
+                  message: "This app requires notification permission to function. Please enable it in your device settings."
+                });
+              });
+          })
+          .catch(() => {
+            openAppSettingsAlertUtil({
+              title: "Permission Required",
+              message: "This app requires notification permission to function. Please enable it in your device settings."
+            });
+          });
+      });
   }, []);
 
   return (
@@ -21,7 +52,7 @@ export default function App() {
         backgroundColor: "black"
       }}
     >
-      <Text style={{ color: "white" }}>Open up App.tsx to start working on your app!</Text>
+      <Text style={{ color: "white" }}>Say Time</Text>
     </View>
   );
 }
