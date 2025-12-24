@@ -52,7 +52,7 @@ export default function App() {
         backgroundColor: "black"
       }}
     >
-      <Text style={{ color: "white" }}>Say Time</Text>
+      <Text style={{ color: "white" }}> { checkNotificationPermission().then(() => { return "Say Time" }).catch(() => { return "Notification Permission Not Granted" })}</Text>
     </View>
   );
 }
