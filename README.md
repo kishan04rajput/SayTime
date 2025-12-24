@@ -48,3 +48,63 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+## Folder structure
+
+your-app/
+│
+├── App.tsx                      # Root entry file Expo loads
+├── app.json                     # App config (name, icons, splash)
+├── tsconfig.json                # TypeScript configuration
+├── package.json                 # Dependencies + scripts
+├── metro.config.js              # Metro bundler config
+│
+├── assets/                      # Static files bundled at build time
+│   ├── fonts/                   # Custom fonts
+│   ├── images/                  # App images
+│   └── icons/                   # Icon files
+│
+├── src/                         # Main app source code
+│   │
+│   ├── components/              # Reusable UI pieces
+│   │   ├── Button.tsx
+│   │   └── Card.tsx
+│   │
+│   ├── screens/                 # Full screen views (routes)
+│   │   ├── HomeScreen.tsx
+│   │   ├── LoginScreen.tsx
+│   │   └── ProfileScreen.tsx
+│   │
+│   ├── navigation/              # Navigation stacks/tabs logic
+│   │   ├── AppNavigator.tsx
+│   │   └── index.ts
+│   │
+│   ├── hooks/                   # Custom hooks (logic only)
+│   │   ├── useAuth.ts
+│   │   └── useFetch.ts
+│   │
+│   ├── context/                 # Global state via Context API
+│   │   └── AuthContext.tsx
+│   │
+│   ├── services/                # API & backend communication
+│   │   ├── api.ts
+│   │   └── authService.ts
+│   │
+│   ├── utils/                   # Helper functions
+│   │   ├── validators.ts
+│   │   └── formatters.ts
+│   │
+│   ├── constants/               # Colors, configs, enums
+│   │   ├── Colors.ts
+│   │   └── Config.ts
+│   │
+│   ├── types/                   # Global TypeScript interfaces/types
+│   │   ├── auth.ts
+│   │   └── common.ts
+│   │
+│   └── theme/                   # Spacing, fonts, typography system
+│       ├── spacing.ts
+│       └── typography.ts
+│
+└── node_modules/                # All dependencies installed
+

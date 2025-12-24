@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Text, View } from "react-native";
-import { checkNotificationPermission, scheduleDailyNotification } from "../services/notificationService";
+import { checkNotificationPermission, scheduleDailyNotification } from "../utils/notificationUtil";
 
 export default function App() {
 
