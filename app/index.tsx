@@ -1,47 +1,54 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { askNotificationPermission, canAskAgainNotificationPermission, checkNotificationPermission, scheduleDailyNotification } from "../utils/notificationUtil";
 import { openAppSettingsAlertUtil } from "../utils/openAppSettingsAlertUtil";
 
 export default function App() {
 
+  const [notificationPermission, setNotificationPermission] = useState<boolean>(false);
+  const [showAppSettingsAlert, setShowAppSettingsAlert] = useState<boolean>(false);
+
   useEffect(() => {
     checkNotificationPermission()
       .then(() => {
-        scheduleDailyNotification({
-          hour: 0,
-          minute: 0,
-          title: "Look at that notification",
-          body: "I'm so proud of myself!",
-        });
+        setNotificationPermission(true);
       })
       .catch(() => {
         canAskAgainNotificationPermission()
           .then(() => {
             askNotificationPermission()
               .then(() => {
-                scheduleDailyNotification({
-                  hour: 0,
-                  minute: 0,
-                  title: "Look at that notification",
-                  body: "I'm so proud of myself!",
-                });
+                setNotificationPermission(true);
               })
               .catch(() => {
-                openAppSettingsAlertUtil({
-                  title: "Permission Required",
-                  message: "This app requires notification permission to function. Please enable it in your device settings."
-                });
+                setShowAppSettingsAlert(true);
               });
           })
           .catch(() => {
-            openAppSettingsAlertUtil({
-              title: "Permission Required",
-              message: "This app requires notification permission to function. Please enable it in your device settings."
-            });
+            setShowAppSettingsAlert(true);
           });
       });
   }, []);
+
+  useEffect(() => {
+    if (notificationPermission) {
+      scheduleDailyNotification({
+        hour: 0,
+        minute: 0,
+        title: "Look at that notification",
+        body: "I'm so proud of myself!",
+      });
+    }
+  }, [notificationPermission]);
+
+  useEffect(() => {
+    if (showAppSettingsAlert) {
+      openAppSettingsAlertUtil({
+        title: "Permission Required",
+        message: "This app requires notification permission to function. Please enable it in your device settings."
+      });
+    }
+  }, [showAppSettingsAlert]);
 
   return (
     <View
@@ -52,7 +59,7 @@ export default function App() {
         backgroundColor: "black"
       }}
     >
-      <Text style={{ color: "white" }}> { checkNotificationPermission().then(() => { return "Say Time" }).catch(() => { return "Notification Permission Not Granted" })}</Text>
+      <Text style={{ color: "white" }}> {notificationPermission ? "Say Time" : "Notification Permission Not Granted Restart The App"}</Text>
     </View>
   );
 }
