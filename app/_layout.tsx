@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldPlaySound: true,
+    shouldPlaySound: false,
     shouldSetBadge: true,
     shouldShowBanner: true,
     shouldShowList: true,

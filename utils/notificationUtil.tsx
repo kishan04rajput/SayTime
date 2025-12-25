@@ -1,6 +1,7 @@
 import * as Notifications from "expo-notifications";
 
-export const scheduleDailyNotification = async ({
+// Schedule a notification without canceling existing ones
+export const scheduleNotificationWithoutCancel = async ({
   hour,
   minute,
   title,
@@ -11,7 +12,6 @@ export const scheduleDailyNotification = async ({
   title: string;
   body: string;
 }) => {
-  await Notifications.cancelAllScheduledNotificationsAsync();
   await Notifications.scheduleNotificationAsync({
     content: {
       title,
@@ -24,6 +24,22 @@ export const scheduleDailyNotification = async ({
       channelId: "max",
     },
   });
+};
+
+// Schedule a daily notification (cancels all existing notifications first)
+export const scheduleDailyNotification = async ({
+  hour,
+  minute,
+  title,
+  body,
+}: {
+  hour: number;
+  minute: number;
+  title: string;
+  body: string;
+}) => {
+  await Notifications.cancelAllScheduledNotificationsAsync();
+  await scheduleNotificationWithoutCancel({ hour, minute, title, body });
 };
 
 export const checkNotificationPermission = async (): Promise<boolean> => {
