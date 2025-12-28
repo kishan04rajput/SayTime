@@ -11,8 +11,8 @@ import { speak } from "../utils/ttsUtil";
 // CONFIGURATION: Notification intervals in minutes from selected time
 // You can modify this array to change when notifications are triggered
 // Example: [0, 5, 10, 15, 20, 25, 30] means notifications at +0min, +5min, +10min, etc.
-// const NOTIFICATION_INTERVALS = [0, 5, 10, 15, 20, 25, 30];
-const NOTIFICATION_INTERVALS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+const NOTIFICATION_INTERVALS = [0, 5, 10, 15, 20, 25, 30];
+// const NOTIFICATION_INTERVALS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
 
 export default function App() {
   const [notificationPermission, setNotificationPermission] = useState<boolean>(false);
