@@ -1,16 +1,44 @@
-# Welcome to your Expo app 👋
+# ⏰ SayTime
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application that **speaks the time aloud** at scheduled intervals. Perfect for users who want audible time reminders without constantly checking their phone.
 
-## Get started
+## What Does This App Do?
 
-1. Install dependencies
+**SayTime** schedules notifications at your preferred time intervals and uses **Text-to-Speech (TTS)** to verbally announce the current time when each notification triggers. Simply set your desired start time, choose how often you want to be notified, and let the app do the rest!
+
+## ✨ Features
+
+- **🗣️ Voice Time Announcements** - Uses Text-to-Speech to speak the current time aloud
+- **🔔 Scheduled Notifications** - Set a start time and receive notifications at regular intervals
+- **⏱️ Customizable Intervals** - Choose from 1, 5, 10, 15, or 30-minute intervals
+- **📅 30-Minute Notification Window** - Notifications are scheduled for 30 minutes from your start time
+- **💾 Persistent Settings** - Your preferences are saved and restored when you reopen the app
+- **🎨 Modern UI** - Beautiful gradient design with an intuitive interface
+
+## 🛠️ How It Works
+
+1. **Set the Time** - Choose the hour, minute, and AM/PM for when you want notifications to start
+2. **Choose the Interval** - Select how often you want to receive notifications (e.g., every 5 minutes)
+3. **Grant Permission** - Allow notification permissions when prompted
+4. **Get Notified** - The app schedules notifications and uses TTS to speak the time when each one triggers
+
+## 🚀 Tech Stack
+
+- **React Native** with **Expo**
+- **expo-notifications** - For scheduling local notifications
+- **react-native-tts** - For text-to-speech functionality
+- **AsyncStorage** - For persisting user preferences
+- **expo-linear-gradient** - For the gradient UI design
+
+## 📦 Getting Started
+
+1. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. **Run on Android**
 
    ```bash
    npx expo start
@@ -29,7 +57,7 @@ You can start developing by editing the files inside the **app** directory. This
 
 When you're ready, run:
 
-```bash
+   ```bash
 npm run reset-project
 ```
 
@@ -107,4 +135,3 @@ your-app/
 │       └── typography.ts
 │
 └── node_modules/                # All dependencies installed
-
