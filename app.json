@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kishanrajput.ios.sayTime"
+      "bundleIdentifier": "com.ios.sayTime"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.kishanrajput.android.sayTime"
+      "package": "com.android.sayTime"
     },
     "web": {
       "output": "static",
