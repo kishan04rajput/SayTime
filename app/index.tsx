@@ -8,11 +8,10 @@ import { askNotificationPermission, canAskAgainNotificationPermission, checkNoti
 import { openAppSettingsAlertUtil } from "../utils/openAppSettingsAlertUtil";
 import { speak } from "../utils/ttsUtil";
 
-// CONFIGURATION: Notification intervals in minutes from selected time
-// You can modify this array to change when notifications are triggered
-// Example: [0, 5, 10, 15, 20, 25, 30] means notifications at +0min, +5min, +10min, etc.
-const NOTIFICATION_INTERVALS = [0, 5, 10, 15, 20, 25, 30];
-// const NOTIFICATION_INTERVALS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+// Default interval in minutes between notifications
+const DEFAULT_INTERVAL = "5";
+// Total duration in minutes to schedule notifications (30 minutes from start time)
+const NOTIFICATION_DURATION = 30;
 
 export default function App() {
   const [notificationPermission, setNotificationPermission] = useState<boolean>(false);
@@ -21,6 +20,16 @@ export default function App() {
   const [selectedHour, setSelectedHour] = useState<string>("10");
   const [selectedMinute, setSelectedMinute] = useState<string>("00");
   const [selectedAmPm, setSelectedAmPm] = useState<string>("AM");
+  const [selectedInterval, setSelectedInterval] = useState<string>(DEFAULT_INTERVAL);
+
+  // Generate notification intervals based on selected interval
+  const generateNotificationIntervals = (intervalMinutes: number): number[] => {
+    const intervals: number[] = [];
+    for (let i = 0; i <= NOTIFICATION_DURATION; i += intervalMinutes) {
+      intervals.push(i);
+    }
+    return intervals;
+  };
 
   // Convert 12-hour format to 24-hour format
   const convertTo24Hour = (hour12: string, ampm: string): number => {
@@ -64,14 +73,16 @@ export default function App() {
   };
 
   // Schedule multiple notifications based on intervals
-  const scheduleMultipleNotifications = async (baseHour: number, baseMinute: number) => {
+  const scheduleMultipleNotifications = async (baseHour: number, baseMinute: number, intervalMinutes: number) => {
+    const notificationIntervals = generateNotificationIntervals(intervalMinutes);
+    
     // Cancel all existing notifications first
     await Notifications.cancelAllScheduledNotificationsAsync();
-    console.log(`🔔 Scheduling ${NOTIFICATION_INTERVALS.length} notifications...`);
+    console.log(`🔔 Scheduling ${notificationIntervals.length} notifications with ${intervalMinutes} min interval...`);
     
     // Schedule a notification for each interval
-    for (const intervalMinutes of NOTIFICATION_INTERVALS) {
-      const { hour, minute } = addMinutesToTime(baseHour, baseMinute, intervalMinutes);
+    for (const offset of notificationIntervals) {
+      const { hour, minute } = addMinutesToTime(baseHour, baseMinute, offset);
       const { hour: hour12, minute: minute12, ampm } = convertTo12Hour(hour, minute);
       
       // Use the new function that doesn't cancel previous notifications
@@ -85,7 +96,7 @@ export default function App() {
       console.log(`✅ Scheduled: ${hour12}:${minute12} ${ampm}`);
     }
     
-    console.log(`🎉 All ${NOTIFICATION_INTERVALS.length} notifications scheduled successfully!`);
+    console.log(`🎉 All ${notificationIntervals.length} notifications scheduled successfully!`);
   };
 
   // Load saved time from AsyncStorage on app start
@@ -95,6 +106,7 @@ export default function App() {
         const storedHour = await AsyncStorage.getItem('selectedHour');
         const storedMinute = await AsyncStorage.getItem('selectedMinute');
         const storedAmPm = await AsyncStorage.getItem('selectedAmPm');
+        const storedInterval = await AsyncStorage.getItem('selectedInterval');
 
         if (storedHour) setSelectedHour(storedHour);
         else await AsyncStorage.setItem('selectedHour', "10");
@@ -104,6 +116,9 @@ export default function App() {
         
         if (storedAmPm) setSelectedAmPm(storedAmPm);
         else await AsyncStorage.setItem('selectedAmPm', "AM");
+
+        if (storedInterval) setSelectedInterval(storedInterval);
+        else await AsyncStorage.setItem('selectedInterval', DEFAULT_INTERVAL);
       } catch (error) {
         console.error("Error loading saved time:", error);
       }
@@ -134,15 +149,16 @@ export default function App() {
       });
   }, []);
 
-  // Schedule notifications whenever time selection changes or permission is granted
+  // Schedule notifications whenever time selection or interval changes, or permission is granted
   useEffect(() => {
-    if (notificationPermission && selectedHour && selectedMinute && selectedAmPm) {
+    if (notificationPermission && selectedHour && selectedMinute && selectedAmPm && selectedInterval) {
       const hour24 = convertTo24Hour(selectedHour, selectedAmPm);
       const minute = parseInt(selectedMinute);
+      const interval = parseInt(selectedInterval);
       
-      scheduleMultipleNotifications(hour24, minute);
+      scheduleMultipleNotifications(hour24, minute, interval);
     }
-  }, [notificationPermission, selectedHour, selectedMinute, selectedAmPm]);
+  }, [notificationPermission, selectedHour, selectedMinute, selectedAmPm, selectedInterval]);
 
   // Show app settings alert if needed
   useEffect(() => {
@@ -189,9 +205,22 @@ export default function App() {
     await AsyncStorage.setItem('selectedAmPm', e.value);
   };
 
+  const updateSelectedInterval = async (e: any) => {
+    setSelectedInterval(e.value);
+    await AsyncStorage.setItem('selectedInterval', e.value);
+  };
+
   const ampm = [
     { label: 'AM', value: 'AM' },
     { label: 'PM', value: 'PM' },
+  ];
+
+  const intervalOptions = [
+    { label: '1 min', value: '1' },
+    { label: '5 min', value: '5' },
+    { label: '10 min', value: '10' },
+    { label: '15 min', value: '15' },
+    { label: '30 min', value: '30' },
   ];
   
   const hour = [
@@ -358,6 +387,34 @@ export default function App() {
           </View>
         </View>
 
+        {/* Interval Selector Card */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Notification Interval</Text>
+          <Text style={styles.intervalDescription}>
+            How often should notifications repeat?
+          </Text>
+          
+          <View style={styles.intervalDropdownWrapper}>
+            <Dropdown
+              style={styles.intervalDropdown}
+              containerStyle={styles.dropdownContainer}
+              placeholderStyle={styles.selectedTextStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              itemTextStyle={styles.itemTextStyle}
+              data={intervalOptions}
+              labelField="label"
+              valueField="value"
+              placeholder={`${selectedInterval} min`}
+              value={selectedInterval}
+              onChange={updateSelectedInterval}
+            />
+          </View>
+          
+          <Text style={styles.intervalInfo}>
+            Notifications will be sent every {selectedInterval} minute(s) for 30 minutes
+          </Text>
+        </View>
+
         {/* Status Section */}
         <View style={styles.statusContainer}>
           {notificationPermission ? (
@@ -368,10 +425,10 @@ export default function App() {
                 You'll receive notifications every day at:
               </Text>
               <View style={styles.notificationTimesContainer}>
-                {NOTIFICATION_INTERVALS.map((intervalMinutes, index) => {
+                {generateNotificationIntervals(parseInt(selectedInterval)).map((offsetMinutes, index) => {
                   const hour24 = convertTo24Hour(selectedHour, selectedAmPm);
                   const minute = parseInt(selectedMinute);
-                  const { hour, minute: adjustedMinute } = addMinutesToTime(hour24, minute, intervalMinutes);
+                  const { hour, minute: adjustedMinute } = addMinutesToTime(hour24, minute, offsetMinutes);
                   const { hour: hour12, minute: minute12, ampm } = convertTo12Hour(hour, adjustedMinute);
                   
                   return (
@@ -585,5 +642,28 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: 'rgba(100, 255, 218, 0.3)',
+  },
+  intervalDescription: {
+    fontSize: 14,
+    color: '#a8b2d1',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  intervalDropdownWrapper: {
+    marginBottom: 16,
+  },
+  intervalDropdown: {
+    height: 54,
+    borderColor: 'rgba(100, 255, 218, 0.3)',
+    borderWidth: 2,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  intervalInfo: {
+    fontSize: 13,
+    color: '#64ffda',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });
