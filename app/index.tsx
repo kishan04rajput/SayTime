@@ -361,7 +361,7 @@ export default function App() {
             </View>
 
             <View style={styles.dropdownWrapper}>
-              <Text style={styles.dropdownLabel}>Period</Text>
+              <Text style={styles.dropdownLabel}>AM/PM</Text>
               <Dropdown
                 style={styles.dropdown}
                 containerStyle={styles.dropdownContainer}
