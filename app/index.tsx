@@ -302,7 +302,7 @@ export default function App() {
   ];
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <LinearGradient
         colors={['#1a1a2e', '#16213e', '#0f3460']}
         style={styles.gradient}
