@@ -1,8 +1,9 @@
+import { startForegroundService, TimeSchedule } from "@/utils/foregroundServiceUtil";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Dropdown } from 'react-native-element-dropdown';
 import { askNotificationPermission, canAskAgainNotificationPermission, checkNotificationPermission, scheduleNotificationWithoutCancel } from "../utils/notificationUtil";
 import { openAppSettingsAlertUtil } from "../utils/openAppSettingsAlertUtil";
@@ -156,9 +157,40 @@ export default function App() {
       const minute = parseInt(selectedMinute);
       const interval = parseInt(selectedInterval);
       
+      // Schedule notifications (for display)
       scheduleMultipleNotifications(hour24, minute, interval);
+      
+      // Start foreground service on Android (for TTS in background)
+      if (Platform.OS === 'android') {
+        startForegroundServiceWithSchedule(hour24, minute, interval);
+      }
     }
   }, [notificationPermission, selectedHour, selectedMinute, selectedAmPm, selectedInterval]);
+  // Start foreground service with the schedule
+  const startForegroundServiceWithSchedule = async (baseHour: number, baseMinute: number, intervalMinutes: number) => {
+    try {
+      const notificationIntervals = generateNotificationIntervals(intervalMinutes);
+      const schedule: TimeSchedule[] = [];
+      
+      // Build schedule for foreground service
+      for (const offset of notificationIntervals) {
+        const { hour, minute } = addMinutesToTime(baseHour, baseMinute, offset);
+        const { hour: hour12, minute: minute12, ampm } = convertTo12Hour(hour, minute);
+        
+        schedule.push({
+          hour,
+          minute,
+          message: `It's ${hour12}:${minute12} ${ampm}!`
+        });
+      }
+      
+      // Start the foreground service
+      await startForegroundService(schedule);
+      console.log('🚀 Foreground service started with schedule');
+    } catch (error) {
+      console.error('❌ Error starting foreground service:', error);
+    }
+  };
 
   // Show app settings alert if needed
   useEffect(() => {

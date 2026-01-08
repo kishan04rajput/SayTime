@@ -41,7 +41,8 @@
           }
         }
       ],
-      "expo-notifications"
+      "expo-notifications",
+      "./plugins/withTimeAnnouncementService.js"
     ],
     "experiments": {
       "typedRoutes": true,
