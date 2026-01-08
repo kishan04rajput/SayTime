@@ -103,6 +103,9 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Setup notification channel for background delivery
+        await setupNotificationChannel();
+        
         const storedHour = await AsyncStorage.getItem('selectedHour');
         const storedMinute = await AsyncStorage.getItem('selectedMinute');
         const storedAmPm = await AsyncStorage.getItem('selectedAmPm');

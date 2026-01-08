@@ -1,4 +1,25 @@
 import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
+
+// Setup notification channel for Android with high priority
+// This ensures notifications can wake the app in background
+export const setupNotificationChannel = async () => {
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("max", {
+      name: "Time Notifications",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#64ffda",
+      sound: null, // We're using TTS instead of sound
+      enableVibrate: true,
+      showBadge: true,
+      enableLights: true,
+      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+      bypassDnd: false,
+    });
+    console.log("✅ Notification channel configured for background delivery");
+  }
+};
 
 // Schedule a notification without canceling existing ones
 export const scheduleNotificationWithoutCancel = async ({
@@ -16,6 +37,9 @@ export const scheduleNotificationWithoutCancel = async ({
     content: {
       title,
       body,
+      sound: null, // Disable sound since we're using TTS
+      priority: Notifications.AndroidNotificationPriority.MAX,
+      vibrate: [0, 250, 250, 250],
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DAILY,
