@@ -4,7 +4,7 @@ import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Dropdown } from 'react-native-element-dropdown';
-import { askNotificationPermission, canAskAgainNotificationPermission, checkNotificationPermission, scheduleNotificationWithoutCancel } from "../utils/notificationUtil";
+import { askNotificationPermission, canAskAgainNotificationPermission, checkNotificationPermission, scheduleNotificationWithoutCancel, setupNotificationChannel } from "../utils/notificationUtil";
 import { openAppSettingsAlertUtil } from "../utils/openAppSettingsAlertUtil";
 import { speak } from "../utils/ttsUtil";
 
